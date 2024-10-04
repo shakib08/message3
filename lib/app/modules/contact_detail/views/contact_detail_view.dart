@@ -71,18 +71,26 @@ class ContactDetailView extends GetView<ContactDetailController> {
             SizedBox(
               height: 10,
             ),
-            Text(
-              'Phone Number / Account Name / Email',
-              style: GoogleFonts.montserrat(
-                fontSize: 15,
-                fontWeight: FontWeight.w400,
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                'Phone Number / Account Name / Email',
+                style: GoogleFonts.montserrat(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w400,
+                ),
+                overflow: TextOverflow.ellipsis,
               ),
             ),
-            Text(
-              '+92 323 4471436 / @myaccount / asd@gmail.com',
-              style: GoogleFonts.montserrat(
-                fontSize: 15,
-                fontWeight: FontWeight.w400,
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                '+92 323 4471436 / @myaccount / asd@gmail.com',
+                style: GoogleFonts.montserrat(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w400,
+                ),
+                overflow: TextOverflow.ellipsis,
               ),
             ),
             SizedBox(
