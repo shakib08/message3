@@ -2,20 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // Import flutter_screenutil
 import 'package:get/get.dart';
 
-class ChattingListView extends StatefulWidget {
-  const ChattingListView({super.key});
+import '../controllers/chatting_list_controller.dart';
 
-  @override
-  _ChattingListViewState createState() => _ChattingListViewState();
-}
+// class ChattingListView extends StatefulWidget {
+//   const ChattingListView({super.key});
+//
+//   @override
+//   ChattingListViewState createState() => ChattingListViewState();
+// }
 
-class _ChattingListViewState extends State<ChattingListView> {
-  bool _isMultiSelect = false; // Toggle state
-  TextEditingController _searchController = TextEditingController(); // Controller for search bar
+class ChattingListView extends GetView<ChattingListController> {
+  bool _isMultiSelect = false;
+
+  ChattingListView({super.key}); // Toggle state
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Obx(()=> controller.isloading==false?
+
+
+        Scaffold(
       // Default AppBar
       appBar: AppBar(
         elevation: 0,
@@ -23,9 +29,10 @@ class _ChattingListViewState extends State<ChattingListView> {
         leading: Padding(
           padding: EdgeInsets.all(8.w), // Responsive padding
           child: CircleAvatar(
-            backgroundImage: AssetImage('assets/david.png'), // Avatar image
-            radius: 20.r, // Responsive avatar size
+            backgroundImage: AssetImage('assets/david.png'), // Use AssetImage instead of Image.asset
+            radius: 20.r, // Responsive avatar size using flutter_screenutil
           ),
+
         ),
         title: Row(
           children: [
@@ -39,9 +46,9 @@ class _ChattingListViewState extends State<ChattingListView> {
         actions: [
           IconButton(
             onPressed: () {
-              setState(() {
-                _isMultiSelect = true; // Toggle state to show the extra row
-              });
+              // setState(() {
+              //   _isMultiSelect = true; // Toggle state to show the extra row
+              // });
             },
             icon: Icon(Icons.select_all, color: Colors.black, size: 24.sp), // Responsive icon size
           ),
@@ -51,30 +58,7 @@ class _ChattingListViewState extends State<ChattingListView> {
       body: Column(
         children: [
           // Conditional Row to show when multi-select is enabled
-          if (_isMultiSelect) _buildMultiSelectRow(),
-
-          // Search Field Below AppBar
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 16.w),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.grey[200], // Background color for the search field
-                borderRadius: BorderRadius.circular(20.r), // Rounded corners
-              ),
-              child: TextField(
-                controller: _searchController,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.search, size: 24.sp, color: Colors.grey), // Search icon
-                  hintText: 'Search...', // Placeholder text
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(vertical: 12.h),
-                ),
-                onChanged: (value) {
-                  // Handle search logic here
-                },
-              ),
-            ),
-          ),
+          //if (isMultiSelect) buildMultiSelectRow(),
 
           // Chatting List
           Expanded(
@@ -83,13 +67,23 @@ class _ChattingListViewState extends State<ChattingListView> {
                 _buildChatItem(
                   context,
                   'assets/david.png',
+                  'Robert Olivdigo',
+                  'Yes sure! I can do',
+                  '10:27 PM',
+                  Colors.purpleAccent,
+                  Icons.done_all,
+                ),
+
+                _buildChatItem(
+                  context,
+                  'assets/david.png',
                   'Micheal David',
                   'How can I help you br...',
                   '5:20 PM',
                   Colors.green,
-                  Icons.message, // WhatsApp icon
+                  Icons.message,
                 ),
-                // Add more items here
+                // Add more items
               ],
             ),
           ),
@@ -116,8 +110,80 @@ class _ChattingListViewState extends State<ChattingListView> {
           ),
         ],
       ),
-    );
+    ):
+    Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(height: 20.h), // Responsive height
+            // Logo or Icon
+            Image.asset(
+              'assets/top_logo.png', // Foreground logo
+              width: 100.w, // Responsive width for image
+              height: 100.h, // Responsive height for image
+            ),
+            SizedBox(height: 20.h),
+            // App Name Text
+            Text(
+              'MessageMind',
+              style: TextStyle(
+                fontSize: 24.sp, // Responsive font size
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+            SizedBox(height: 20.h),
+            // Progress bar with 80% width
+            Obx(() {
+              return Column(
+                children: [
+                  SizedBox(
+                    width: 0.8.sw, // 80% of screen width
+                    child: LinearProgressIndicator(
+                      value: controller.progress.value / 100, // Using controller's value
+                      backgroundColor: Colors.grey[300],
+                      valueColor: const AlwaysStoppedAnimation<Color>(Colors.pink),
+                      minHeight: 5.h, // Responsive height
+                    ),
+                  ),
+                  SizedBox(height: 10.h),
+                  // Progress percentage text
+                  Text(
+                    '${controller.progress.value.toStringAsFixed(0)}%',
+                    style: TextStyle(
+                      fontSize: 16.sp, // Responsive font size
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
+              );
+            }),
+            SizedBox(height: 20.h),
+            // Loading Text
+            Text(
+              'Loading . . .',
+              style: TextStyle(
+                fontSize: 16.sp, // Responsive font size
+                color: Colors.grey,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ));
   }
+
+
+
+
+
+
+
+
+
+
 
   // Additional Row below AppBar when multi-select is active
   Widget _buildMultiSelectRow() {
@@ -134,14 +200,14 @@ class _ChattingListViewState extends State<ChattingListView> {
               Text('(0)', style: TextStyle(color: Colors.black, fontSize: 10.sp)), // Responsive text
             ],
           ),
-          IconButton(
-            onPressed: () {
-              setState(() {
-                _isMultiSelect = false; // Close the multi-select row
-              });
-            },
-            icon: Icon(Icons.message, color: Colors.pink, size: 10.sp), // Responsive icon
-          ),
+             IconButton(
+                onPressed: () {
+                  // setState(() {
+                  //   _isMultiSelect = false; // Close the multi-select row
+                  // });
+                },
+                icon: Icon(Icons.message, color: Colors.pink, size: 10.sp), // Responsive icon
+              ),
           Row(
             children: [
               Padding(
@@ -156,7 +222,7 @@ class _ChattingListViewState extends State<ChattingListView> {
                       borderRadius: BorderRadius.circular(20.r), // Responsive border radius
                     ),
                   ),
-                  child: Text('Assign to AI', style: TextStyle(fontSize: 8.sp, color: Colors.white)), // Responsive text
+                  child: Text('Assign to AI', style: TextStyle(fontSize: 8.sp,color:Colors.white)), // Responsive text
                 ),
               ),
               Padding(
@@ -173,17 +239,17 @@ class _ChattingListViewState extends State<ChattingListView> {
                   ),
                   child: Row(
                     children: [
-                      Text('Assign to Team', style: TextStyle(fontSize: 8.sp, color: Colors.white)), // Responsive text
-                      Icon(Icons.arrow_drop_down, size: 20.sp, color: Colors.white), // Responsive icon
+                      Text('Assign to Team', style: TextStyle(fontSize: 8.sp,color:Colors.white)), // Responsive text
+                      Icon(Icons.arrow_drop_down, size: 20.sp,color: Colors.white,), // Responsive icon
                     ],
                   ),
                 ),
               ),
               IconButton(
                 onPressed: () {
-                  setState(() {
-                    _isMultiSelect = false; // Close the multi-select row
-                  });
+                  // setState(() {
+                  //   _isMultiSelect = false; // Close the multi-select row
+                  // });
                 },
                 icon: Icon(Icons.close, color: Colors.pink, size: 10.sp), // Responsive icon
               ),
@@ -194,124 +260,114 @@ class _ChattingListViewState extends State<ChattingListView> {
     );
   }
 
-  // Build individual chat item
-  Widget _buildChatItem(
-    BuildContext context,
-    String avatarPath,
-    String name,
-    String lastMessage,
-    String time,
-    Color statusColor,
-    IconData statusIcon,
-  ) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.w), // Responsive padding
-      child: Row(
-        children: [
-          // Avatar
-          CircleAvatar(
-            backgroundImage: AssetImage(avatarPath),
-            radius: 25.r, // Responsive avatar size
-          ),
-          SizedBox(width: 12.w), // Responsive space between avatar and content
-
-          // Name, last message, and badges
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Row with Name and Status Badges
-                Row(
-                  children: [
-                    Text(
-                      name,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16.sp, // Responsive text
-                      ),
-                    ),
-                    SizedBox(width: 5.w), // Space between name and badge
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h), // Badge padding
-                      decoration: BoxDecoration(
-                        color: Colors.orange[100], // Badge background color
-                        borderRadius: BorderRadius.circular(12.r),
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(Icons.circle, color: Colors.orange, size: 10.sp), // Badge icon
-                          SizedBox(width: 2.w),
-                          Text(
-                            'Issac', // Dynamic badge content
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              color: Colors.orange,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-
-                // Last message text
-                Text(
-                  lastMessage,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    color: Colors.grey[600], // Grey color for last message
-                  ),
-                  maxLines: 1, // Limit message to 1 line
-                  overflow: TextOverflow.ellipsis, // Add ellipsis if text is too long
-                ),
-              ],
-            ),
-          ),
-
-          SizedBox(width: 8.w), // Space between text and time/status icons
-
-          // Time and Status Icons
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-     Row(
-  children: [
-    // Status badge
-    Container(
-      padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
-      decoration: BoxDecoration(
-        color: Colors.green[100], // Background color for the status badge
-        borderRadius: BorderRadius.circular(12.r),
-      ),
-      child: Text(
-        '16h', // Dynamic status duration
-        style: TextStyle(
-          fontSize: 12.sp,
-          color: Colors.green,
+Widget _buildChatItem(
+  BuildContext context,
+  String avatarPath,
+  String name,
+  String lastMessage,
+  String time,
+  Color statusColor,
+  IconData statusIcon,
+) {
+  return Padding(
+    padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.w), // Responsive padding
+    child: Row(
+      children: [
+        // Avatar
+        CircleAvatar(
+          backgroundImage: AssetImage(avatarPath),
+          radius: 25.r, // Responsive avatar size
         ),
-      ),
-    ),
-    SizedBox(width: 8.w), // Space between status badge and time
+        SizedBox(width: 12.w), // Responsive space between avatar and content
 
-    // Time text
-    Text(
-      time,
-      style: TextStyle(color: Colors.grey, fontSize: 12.sp), // Time text
-    ),
-  ],
-)
+        // Name, last message, and badges
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Row with Name and Status Badges
+              Row(
+                children: [
+                  Text(
+                    name,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16.sp, // Responsive text
+                    ),
+                  ),
+                  SizedBox(width: 5.w), // Space between name and badge
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h), // Badge padding
+                    decoration: BoxDecoration(
+                      color: Colors.orange[100], // Badge background color
+                      borderRadius: BorderRadius.circular(12.r),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(Icons.circle, color: Colors.orange, size: 10.sp), // Badge icon
+                        SizedBox(width: 2.w),
+                        Text(
+                          'Issac', // Dynamic badge content
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            color: Colors.orange,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
 
-              // Status badge
-          
-            
+              // Last message text
+              Text(
+                lastMessage,
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  color: Colors.grey[600], // Grey color for last message
+                ),
+                maxLines: 1, // Limit message to 1 line
+                overflow: TextOverflow.ellipsis, // Add ellipsis if text is too long
+              ),
             ],
           ),
-          SizedBox(width: 12.w), // Space between time and action icon
+        ),
 
-          // Action Icon (e.g., WhatsApp)
-          Icon(statusIcon, color: statusColor, size: 24.sp), // Responsive action icon
-        ],
-      ),
-    );
-  }
+        SizedBox(width: 8.w), // Space between text and time/status icons
+
+        // Time and Status Icons
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            // Status badge
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+              decoration: BoxDecoration(
+                color: Colors.green[100], // Background color for the status badge
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+              child: Text(
+                '16h', // Dynamic status duration
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  color: Colors.green,
+                ),
+              ),
+            ),
+            SizedBox(height: 4.h), // Space between status and time
+            Text(
+              time,
+              style: TextStyle(color: Colors.grey, fontSize: 12.sp), // Time text
+            ),
+          ],
+        ),
+        SizedBox(width: 12.w), // Space between time and action icon
+
+        // Action Icon (e.g., WhatsApp)
+        Icon(statusIcon, color: statusColor, size: 24.sp), // Responsive action icon
+      ],
+    ),
+  );
+}
+
 }

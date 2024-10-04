@@ -130,7 +130,7 @@ class LoginView extends StatelessWidget {
                        child: ElevatedButton(
   onPressed: () {
     // Navigate to LoadingView
-    Get.toNamed(Routes.LOADING);
+    Get.offNamed('/chatting-list');
   },
   style: ElevatedButton.styleFrom(
     backgroundColor: Colors.pink, // Background color
