@@ -11,7 +11,11 @@ class ChattingListController extends GetxController {
 
   RxBool isloading=true.obs;
 
+ var isMultiSelect = false.obs; // Reactive observable for multi-select toggle
 
+  void toggleMultiSelect() {
+    isMultiSelect.value = !isMultiSelect.value; // Toggles the multi-select state
+  }
 
 
 
