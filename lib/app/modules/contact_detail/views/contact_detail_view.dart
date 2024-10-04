@@ -53,6 +53,17 @@ class ContactDetailView extends GetView<ContactDetailController> {
                 fontWeight: FontWeight.w400,
               ),
             ),
+            SizedBox(height: 5,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+              Image.network('https://www.citypng.com/public/uploads/preview/round-instagram-logo-photos-social-media-701751694793070wrsl7ybb7v.png',height: 24,width: 24,),
+              Text('Instagram', style: GoogleFonts.montserrat(
+                fontSize: 15,
+                fontWeight: FontWeight.w400,
+              ),
+              )
+            ],),
             SizedBox(
               height: 20,
             ),
