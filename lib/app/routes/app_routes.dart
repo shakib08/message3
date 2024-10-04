@@ -5,7 +5,7 @@ abstract class Routes {
   Routes._();
   static const HOME = _Paths.HOME;
   static const LOGIN = _Paths.LOGIN;
-  static const LOADING = _Paths.LOADING;
+  // static const LOADING = _Paths.LOADING;
   static const CHATTING_LIST = _Paths.CHATTING_LIST;
 }
 
@@ -13,6 +13,6 @@ abstract class _Paths {
   _Paths._();
   static const HOME = '/home';
   static const LOGIN = '/login';
-  static const LOADING = '/loading';
+  // static const LOADING = '/loading';
   static const CHATTING_LIST = '/chatting-list';
 }
