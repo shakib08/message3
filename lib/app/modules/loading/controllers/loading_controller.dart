@@ -1,23 +1,24 @@
 import 'package:get/get.dart';
+import 'dart:async';
 
 class LoadingController extends GetxController {
-  //TODO: Implement LoadingController
+  var progress = 0.0.obs; // Holds progress value
 
-  final count = 0.obs;
   @override
   void onInit() {
     super.onInit();
+    simulateLoading(); // Start simulating the loading process
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  // Simulate the progress over time
+  void simulateLoading() {
+    Timer.periodic(const Duration(milliseconds: 100), (timer) {
+      if (progress.value < 100) {
+        progress.value += 5; // Increment progress by 5% every 100ms
+      } else {
+        timer.cancel();
+        Get.offNamed('/chatting-list'); // Redirect to ChattingListView when 100%
+      }
+    });
   }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }
