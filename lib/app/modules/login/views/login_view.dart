@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:massenger_app3/app/routes/app_pages.dart';
 import '../controllers/login_controller.dart';
 
 class LoginView extends StatelessWidget {
@@ -21,7 +22,9 @@ class LoginView extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color(0xFFF4F4FB),
       body: SafeArea(
+        
         child: Stack(
+        
           children: [
             // Background Circle
             Positioned(
@@ -124,23 +127,25 @@ class LoginView extends StatelessWidget {
                         ),
                         const SizedBox(height: 20),
                         Center(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              // Handle Sign In
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.pink, // Background color
-                              padding: EdgeInsets.symmetric(vertical: 15), // Keep vertical padding
-                              minimumSize: Size(double.infinity, 56), // Width to infinity, height matches TextField height
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10), // Border radius
-                              ),
-                            ),
-                            child: const Text(
-                              'Sign In',
-                              style: TextStyle(color: Colors.white, fontSize: 18),
-                            ),
-                          ),
+                       child: ElevatedButton(
+  onPressed: () {
+    // Navigate to LoadingView
+    Get.offNamed('/chatting-list');
+  },
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.pink, // Background color
+    padding: EdgeInsets.symmetric(vertical: 15), // Keep vertical padding
+    minimumSize: Size(double.infinity, 56), // Width to infinity, height matches TextField height
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10), // Border radius
+    ),
+  ),
+  child: const Text(
+    'Sign In',
+    style: TextStyle(color: Colors.white, fontSize: 18),
+  ),
+),
+
                         ),
                       ],
                     ),
@@ -166,7 +171,7 @@ class LoginView extends StatelessWidget {
             ),
             // Stack for logos positioned at the right corner
             Positioned(
-              right: -10, // Adjust the position as needed
+              right: -40, // Adjust the position as needed
               top: -20, // Adjust the position as needed
               child: Stack(
                 alignment: Alignment.center, // Center the new logo on top of the background logo
