@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 
 import '../modules/chattingList/bindings/chatting_list_binding.dart';
 import '../modules/chattingList/views/chatting_list_view.dart';
+import '../modules/contact_detail/bindings/contact_detail_binding.dart';
+import '../modules/contact_detail/views/contact_detail_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login/bindings/login_binding.dart';
@@ -34,6 +36,11 @@ class AppPages {
       name: _Paths.CHATTING_LIST,
       page: () => ChattingListView(),
       binding: ChattingListBinding(),
+    ),
+    GetPage(
+      name: _Paths.CONTACT_DETAIL,
+      page: () => const ContactDetailView(),
+      binding: ContactDetailBinding(),
     ),
   ];
 }
