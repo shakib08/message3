@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // Import flutter_screenutil
 import 'package:get/get.dart';
+import '../../../routes/app_pages.dart';
 import '../controllers/chatting_list_controller.dart';
 
 class ChattingListView extends GetView<ChattingListController> {
@@ -48,9 +49,14 @@ void _showPopupMenu(BuildContext context, Offset position) async {
                 backgroundColor: Colors.white,
                 leading: Padding(
                   padding: EdgeInsets.all(8.w), // Responsive padding
-                  child: CircleAvatar(
-                    backgroundImage: AssetImage('assets/david.png'),
-                    radius: 20.r, // Responsive avatar size using flutter_screenutil
+                  child: InkWell(
+                    onTap: (){
+                      Get.toNamed(Routes.CONTACT_DETAIL);
+                    },
+                    child: CircleAvatar(
+                      backgroundImage: AssetImage('assets/david.png'),
+                      radius: 20.r, // Responsive avatar size using flutter_screenutil
+                    ),
                   ),
                 ),
              title: Row(
