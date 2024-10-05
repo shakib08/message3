@@ -118,8 +118,15 @@ children: [
                   ),
                   // Chatting List
                   Expanded(
+
+
+
+
                     child: ListView(
                       children: [
+
+
+
                         _buildChatItem(
                           context,
                           'assets/david.png',
@@ -129,6 +136,10 @@ children: [
                           Colors.purpleAccent,
                           Icons.done_all,
                         ),
+
+
+
+
                                  _buildChatItem(
                           context,
                           'assets/1.png',
@@ -365,16 +376,29 @@ children: [
     );
   }
 
+
+
+
+
+
+
+
+
   Widget _buildChatItem(
-    BuildContext context,
-    String avatarPath,
-    String name,
-    String lastMessage,
-    String time,
-    Color statusColor,
-    IconData statusIcon,
-  ) {
-    return Padding(
+  BuildContext context,
+  String avatarPath,
+  String name,
+  String lastMessage,
+  String time,
+  Color statusColor,
+  IconData statusIcon,
+) {
+  return GestureDetector(
+    onTap: () {
+      // Navigate to the chat screen when the user clicks the chat item
+      Get.toNamed('/chating');
+    },
+    child: Padding(
       padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.w), // Responsive padding
       child: Row(
         children: [
@@ -424,22 +448,21 @@ children: [
                   ],
                 ),
                 // Last message text
-              Row(
-  children: [
-    Icon(Icons.done_all),
-    SizedBox(width: 3,),
-    Text(
-      _getFirstTwoWords(lastMessage),
-      style: TextStyle(
-        fontSize: 12.sp,
-        color: Colors.grey[600], // Grey color for last message
-      ),
-      maxLines: 1, // Limit message to 1 line
-      overflow: TextOverflow.ellipsis, // Add ellipsis if text is too long
-    ),
-  ],
-),
-
+                Row(
+                  children: [
+                    Icon(Icons.done_all),
+                    SizedBox(width: 3),
+                    Text(
+                      _getFirstTwoWords(lastMessage),
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: Colors.grey[600], // Grey color for last message
+                      ),
+                      maxLines: 1, // Limit message to 1 line
+                      overflow: TextOverflow.ellipsis, // Add ellipsis if text is too long
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
@@ -463,28 +486,26 @@ children: [
                       ),
                     ),
                   ),
-                   Text(
-                time,
-                style: TextStyle(color: Colors.grey, fontSize: 12.sp), // Time text
-              ),
+                  Text(
+                    time,
+                    style: TextStyle(color: Colors.grey, fontSize: 12.sp), // Time text
+                  ),
                 ],
               ),
-               Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                 children: [
-                   Icon(Icons.call_received, color: statusColor, size: 17.sp),
-                    Icon(statusIcon, color: statusColor, size: 17.sp),
-                 ],
-               ), 
+                children: [
+                  Icon(Icons.call_received, color: statusColor, size: 17.sp),
+                  Icon(statusIcon, color: statusColor, size: 17.sp),
+                ],
+              ),
             ],
           ),
-          // SizedBox(height: 4.h), // Space between status and time
-         
           SizedBox(width: 12.w), // Space between time and action icon
-          // Action Icon (e.g., WhatsApp)
-         // Responsive action icon
         ],
       ),
-    );
-  }
+    ),
+  );
+}
+
 }
